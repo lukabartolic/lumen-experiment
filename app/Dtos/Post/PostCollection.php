@@ -1,10 +1,9 @@
 <?php
 
 
-namespace App\Services\Dtos;
+namespace App\Dtos\Post;
 
 
-use App\Clients\JsonPlaceholder\Dtos\Post;
 use Spatie\DataTransferObject\DataTransferObjectCollection;
 
 class PostCollection extends DataTransferObjectCollection

@@ -5,44 +5,35 @@ namespace App\Services;
 
 
 use App\Clients\JsonPlaceholder\JsonPlaceholder;
-use App\Services\Dtos\Converters\PostConverter;
-use App\Services\Dtos\PaginationData;
-use App\Services\Dtos\Post;
-use App\Services\Dtos\PostCollection;
-use App\Services\Dtos\PostPagination;
-use App\Support\PageableCollection;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-use function Symfony\Component\String\s;
+use App\Repositories\PostRepository;
+use App\Dtos\Converters\PostConverter;
+use App\Dtos\PaginationData;
+use App\Dtos\Post\Post;
+use App\Dtos\Post\PostPagination;
+use App\Support\PageRequest;
 
 class PostService
 {
     private JsonPlaceholder $apiClient;
+    private PostRepository $postRepository;
 
-    public function __construct(JsonPlaceholder $jsonPlaceholder)
+    public function __construct(JsonPlaceholder $jsonPlaceholder, PostRepository $postRepository)
     {
         $this->apiClient = $jsonPlaceholder;
+        $this->postRepository = $postRepository;
     }
 
     public function get(int $id) {
-        $post = $this->apiClient->postResource()->getPost($id);
+        $post = $this->postRepository->findById($id);
 
-        return new Post($post->toArray());
+        return PostConverter::toDto($post);
     }
 
     public function getPosts(int $page = 1, int $userId = null) {
-        $posts = $this->apiClient->postResource()->getPosts($userId);
+        $posts = $this->postRepository->findAll(PageRequest::set(10, $page));
 
-        $postDtos = PostConverter::toDtos($posts);
+        $postDtos = PostConverter::toDtos($posts->getData());
 
-        //$paged = new LengthAwarePaginator($items->forPage($page, 5), $items->count(), 5, 1);
-
-        $paged = (new PageableCollection($postDtos->toArray()))->paginate(5, $page);
-
-        return new PostPagination(['items' => $paged->items(), 'pagination' => new PaginationData($paged)]);
-    }
-
-    public function findPostByComment(int $commentId) {
-
+        return new PostPagination(['items' => $postDtos, 'pagination' => new PaginationData($posts->getPaginator())]);
     }
 }

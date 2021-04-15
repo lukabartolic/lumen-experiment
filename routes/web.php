@@ -26,9 +26,10 @@ $router->group([
     });
 
     $router->get('posts', 'PostController@getPosts');
-
     $router->get('posts/{id}', 'PostController@get');
 
     $router->get('posts/{postId}/comments', 'CommentController@getForPost');
+    $router->get('comments', 'CommentController@getComments');
+    $router->get('comments/{id}', 'CommentController@get');
 
 });

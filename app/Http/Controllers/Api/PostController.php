@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\CommentService;
 use App\Services\PostService;
 use App\Support\PageableCollection;
 
 class PostController extends Controller
 {
     private PostService $postService;
+    private CommentService $commentService;
 
-    public function __construct(PostService $postService)
+    public function __construct(PostService $postService, CommentService $commentService)
     {
         $this->postService = $postService;
+        $this->commentService = $commentService;
     }
 
     public function get(int $id) {

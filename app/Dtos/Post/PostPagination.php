@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Services\Dtos;
+namespace App\Dtos\Post;
 
 
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Dtos\PaginationData;
 use Spatie\DataTransferObject\DataTransferObject;
 
 class PostPagination extends DataTransferObject

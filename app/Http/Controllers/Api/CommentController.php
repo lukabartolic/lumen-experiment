@@ -15,8 +15,20 @@ class CommentController extends Controller
         $this->commentService = $commentService;
     }
 
+    public function get(int $id) {
+        $comment = $this->commentService->get($id);
+
+        return response()->json($comment, 200);
+    }
+
+    public function getComments() {
+        $comments = $this->commentService->getComments();
+
+        return response()->json($comments->toArray(), 200);
+    }
+
     public function getForPost(int $postId) {
-        $comments = $this->commentService->getForPost($postId);
+        $comments = $this->commentService->getByPost($postId);
 
         return response()->json($comments->toArray(), 200);
     }

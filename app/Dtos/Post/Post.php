@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Dtos;
+namespace App\Dtos\Post;
 
 
 use Spatie\DataTransferObject\DataTransferObject;
